@@ -156,14 +156,22 @@ contract SupplyChain {
   // 2. Change the state of the item to shipped.
 
   // 3. call the event associated with this function!
-  function shipItem(uint sku) public {}
+  function shipItem(uint sku) public sold(sku) verifyCaller(items[sku].seller){
+    Item storage item=items[sku];
+    item.state=State.Shipped;
+    emit LogShipped(sku);
+  }
 
   // 1. Add modifiers to check 
   //    - the item is shipped already 
   //    - the person calling this function is the buyer. 
   // 2. Change the state of the item to received. 
   // 3. Call the event associated with this function!
-  function receiveItem(uint sku) public {}
+  function receiveItem(uint sku) public shipped(sku) verifyCaller(items[sku].buyer){
+    Item storage item=items[sku];
+    item.state=State.Received;
+    emit LogReceived(sku);
+  }
 
   // Uncomment the following code block. it is needed to run tests
    function fetchItem(uint _sku) public view
@@ -178,8 +186,6 @@ contract SupplyChain {
      return (name, sku, price, state, seller, buyer); 
    } 
 
-  // function fetchItem(uint index) public view returns(){
-  //   return items[index];
-  // }
+
 }
 
