@@ -72,7 +72,7 @@ contract SupplyChain {
 
   // modifier forSale
     modifier forSale(uint _sku){
-    require(items[_sku].state == State.ForSale && items[_sku].buyer==address(0));
+    require(items[_sku].state == State.ForSale && items[_sku].seller != address(0));
     _;
   }
   // modifier sold(uint _sku) 
